@@ -1,7 +1,7 @@
 # Beats2Save
 
 A simple python script that allows you to create and restore Beat Saber (PCVR/Steam) backups more easily.\
-Script tested using Python 3.8. (64-bit) - Win10
+Script tested using Python 3.8 (64-bit) - Win10
 
 # How does it work
 When starting a backup, the script copies the "Saves" directory (usually located in "C:\Users\\%username%\\AppData\LocalLow\Hyperbolic Magnetism\Beat Saber") and the "Game" directory ("...\steamapps\common\Beat Saber") to the desired backup folder. Doing so, it also creates a corresponding folder inside the backup location containing the Beat Saber version and time of the backup. Optionally you can specify how many backups you want to keep. If specified the script will only keep a certain amount of backups at a time.\
