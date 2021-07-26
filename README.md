@@ -3,6 +3,15 @@
 A simple python script that allows you to create and restore Beat Saber (PCVR/Steam) backups more easily.\
 Script tested using Python 3.8 (64-bit) - Win10 
 
+# Screenshots
+**Create a backup** (_backup.bat):
+
+![Alt text](/../master/screenshots/backup.png?raw=true "_backup.bat")
+
+**Restore from backup** (_restore.bat):
+
+![Alt text](/../master/screenshots/restore.png?raw=true "_backup.bat")
+
 # How does it work
 When starting a backup, the script copies the "Saves" directory (usually located in "C:\Users\\%username%\\AppData\LocalLow\Hyperbolic Magnetism\Beat Saber") and the "Game" directory ("...\steamapps\common\Beat Saber") to the desired backup folder. Doing so, it also creates a corresponding folder inside the backup location containing the Beat Saber version and time of the backup. Optionally you can specify how many backups you want to keep. If specified the script will only keep a certain amount of backups at a time.\
 
@@ -10,7 +19,7 @@ When restoring a backup, the script allows you to select the backup you want to 
 
 # How to use
 Adjust the "save", "game", and "backup" paths inside "_backup.bat" and "_restore.bat" to your needs.\
-**!!! Important !!!** only use "/". **NO** backslashes. Also **environment variables** like "%username%" **wont work** so you have to paste in the full path.
+**!!! Important !!!** only use "/". **NO** backslashes. Also **environment variables** like "%username%" **won't work** so you have to paste in the full path.
 1. "Save" path - usually located in "C:\Users\\%username%\\AppData\LocalLow\Hyperbolic Magnetism\"
 2. "Game" path - path to your Steam lib e.g. "G:/Steam/steamapps/common"
 3. "Backup" path - specify where you want your backup location to be [you have to create the folder first before starting the backup]
@@ -18,7 +27,7 @@ Adjust the "save", "game", and "backup" paths inside "_backup.bat" and "_restore
 Adjust the max amount of total backups. E.g. -n 8 (max amount of backups is 8).\
 If 0 then it will be infinite.
 
-Execute the *.bat files.
+Execute the *.bat file(s).
 
 
 # Args
