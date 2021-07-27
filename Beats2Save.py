@@ -5,6 +5,7 @@ from os import path
 import os
 import shutil
 from datetime import datetime
+from subprocess import call, run, STDOUT
 
 
 
@@ -16,11 +17,12 @@ group_input.add_argument("-r", "--restore", action="store_true", required=False,
 group_input.add_argument("-c", "--create", action="store_true", required=False, help="Create backup")
 group_input.add_argument("-v", "--version", action="store_true", required=False, help="Show current BeatSaber version")
 
-parser.add_argument("-s", "--save_dir", type=str, metavar="", required=True, help="BeatSaber save directory [e.g " + "C:/Users/Kampfkeks/AppData/LocalLow/Hyperbolic Magnetism" + "\"]")
+parser.add_argument("-s", "--save_dir", type=str, metavar="", required=False, help="BeatSaber save directory [e.g " + "C:/Users/Kampfkeks/AppData/LocalLow/Hyperbolic Magnetism" + "\"]")
 parser.add_argument("-g", "--game_dir", type=str, metavar="", required=True, help="BeatSaber/Steam game directory [e.g \"G:/Steam/steamapps/common\"]")
-parser.add_argument("-b", "--backup_dir", type=str, metavar="", required=True, help="Backup directory [e.g \"G:/Backup/Beatsaber\"]")
+parser.add_argument("-b", "--backup_dir", type=str, metavar="", required=False, help="Backup directory [e.g \"G:/Backup/Beatsaber\"]")
 
-parser.add_argument("-n", "--max_backups", type=int, metavar="", required=False, default=0, help="Max number of backups to store")
+parser.add_argument("-n", "--max_backups", type=int, metavar="", required=False, default=0, help="Max number of backups to store [0 = infinite]")
+parser.add_argument("-d", "--debug", action="store_true", required=False, help="enable debug mode")
 
 args = parser.parse_args()
 
@@ -130,8 +132,12 @@ def bs_version(game_dir):
                 
 
 def copy(src, dst):
+    DEVNULL = open(os.devnull, 'wb')
     try:
-        shutil.copytree(src, dst)
+        if args.debug:
+            call(["robocopy", src, dst, "/MIR"])
+        else:
+            call(["robocopy", src, dst, "/MIR", "/NDL", "/NFL", "/NJH", "/NJS", "/ns", "/nc"], stdout=DEVNULL)
     except Exception as err:
         logging.info("Error copying files")
         print(err)
@@ -139,8 +145,12 @@ def copy(src, dst):
 
 
 def move(src, dst):
+    DEVNULL = open(os.devnull, 'wb')
     try:
-        shutil.move(src, dst)
+        if args.debug:
+            call(["robocopy", src, dst, "/MOVE", "/E"])
+        else:
+            call(["robocopy", src, dst, "/MOVE", "/E", "/NDL", "/NFL", "/NJH", "/NJS", "/ns", "/nc"], stdout=DEVNULL)
     except Exception as err:
         logging.info("Error moving files")
         print(err)
@@ -174,10 +184,12 @@ def backup_count(dirs):
 if __name__ == "__main__":
     if not args.restore and not args.create and not args.version:
         sys.exit()
-    logging.info("Beats2Save 1.0 by KampfKeks502")
-    check_dir(args.save_dir)
+    logging.info("Beats2Save 1.1 by KampfKeks502")
+
+    if not args.version:
+        check_dir(args.save_dir)
+        check_dir(args.backup_dir)
     check_dir(args.game_dir)
-    check_dir(args.backup_dir)
     print()
     logging.info("Path check PASSED")
     version = bs_version(args.game_dir)
