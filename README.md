@@ -1,7 +1,7 @@
 # Beats2Save
 
 A simple python script that allows you to create and restore Beat Saber (PCVR/Steam) backups more easily.\
-Script tested using Python 3.8 (64-bit) - Win10 
+Script tested using Python 3.8 (64-bit) - Win10
 
 # Screenshots
 **Create a backup** (_backup.bat):
@@ -32,7 +32,7 @@ Execute the *.bat file(s).
 
 # Args
 ```test
-usage: Beats2Save.exe [-h] [-r | -c | -v] -s  -g  -b  [-n]
+usage: Beats2Save.exe [-h] [-r | -c | -v] [-s] -g  [-b] [-n] [-d]
 
 Create or Restore BeatSaber backups.
 
@@ -45,4 +45,5 @@ optional arguments:
   -g , --game_dir      BeatSaber/Steam game directory [e.g "G:/Steam/steamapps/common"]
   -b , --backup_dir    Backup directory [e.g "G:/Backup/Beatsaber"]
   -n , --max_backups   Max number of backups to store [0 = infinite]
+  -d, --debug          enable debug mode
 ```
