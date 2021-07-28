@@ -24,7 +24,7 @@ Adjust the "save", "game", and "backup" paths inside "_backup.bat" and "_restore
 2. "Game" path - path to your Steam lib e.g. "G:/Steam/steamapps/common"
 3. "Backup" path - specify where you want your backup location to be [you have to create the folder first before starting the backup]
 
-Adjust the max amount of total backups. E.g. -n 8 (max amount of backups is 8).\
+Adjust the max amount of total backups. E.g. -n 8 (max amount of backups set to 8).\
 If 0 then it will be infinite.
 
 Execute the *.bat file(s).
