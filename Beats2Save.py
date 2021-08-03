@@ -15,11 +15,11 @@ parser = argparse.ArgumentParser(description="Create or Restore BeatSaber backup
 group_input = parser.add_mutually_exclusive_group()
 group_input.add_argument("-r", "--restore", action="store_true", required=False, help="Restore from backup")
 group_input.add_argument("-c", "--create", action="store_true", required=False, help="Create backup")
-group_input.add_argument("-v", "--version", action="store_true", required=False, help="Show current BeatSaber version")
+group_input.add_argument("-i", "--info", action="store_true", required=False, help="Show BS Version and Game/Backup dir size")
 
-parser.add_argument("-s", "--save_dir", type=str, metavar="", required=False, help="BeatSaber save directory [e.g " + "C:/Users/Kampfkeks/AppData/LocalLow/Hyperbolic Magnetism" + "\"]")
+parser.add_argument("-s", "--save_dir", type=str, metavar="", required=True, help="BeatSaber save directory [e.g " + "C:/Users/Kampfkeks/AppData/LocalLow/Hyperbolic Magnetism" + "\"]")
 parser.add_argument("-g", "--game_dir", type=str, metavar="", required=True, help="BeatSaber/Steam game directory [e.g \"G:/Steam/steamapps/common\"]")
-parser.add_argument("-b", "--backup_dir", type=str, metavar="", required=False, help="Backup directory [e.g \"G:/Backup/Beatsaber\"]")
+parser.add_argument("-b", "--backup_dir", type=str, metavar="", required=True, help="Backup directory [e.g \"G:/Backup/Beatsaber\"]")
 
 parser.add_argument("-n", "--max_backups", type=int, metavar="", required=False, default=0, help="Max number of backups to store [0 = infinite]")
 parser.add_argument("-d", "--debug", action="store_true", required=False, help="enable debug mode")
@@ -68,7 +68,7 @@ def restore(save_dir, game_dir, backup_dir, version):
     i = 1
     logging.info("Please select your desired backup and hit ENTER [e.g. 1, 2, 3, ...]")
     for d in dirs:
-        logging.info(str(i) + ".  " + d)
+        logging.info(str(i) + ".  " + d + "  -  " + str(get_size_format(get_size(backup_dir + "/" + str(d)))))
         i += 1
     valid = False
     while not valid:
@@ -114,6 +114,7 @@ def restore(save_dir, game_dir, backup_dir, version):
 def check_dir(paths):
     if not path.exists(paths):
         logging.info("Path not found [" + paths + "]")
+        print("Please make sure the paths inside the \".bat\" files are correct ")
         sys.exit()
 
 
@@ -159,7 +160,7 @@ def move(src, dst):
 
 
 def clean_backups(backup_dir, max_backups):
-    dirs = os.listdir(backup_dir)
+    dirs = get_dir_list(backup_dir)
     count = backup_count(dirs)
     if count> max_backups:
         print()
@@ -181,18 +182,61 @@ def backup_count(dirs):
     return i
 
 
-if __name__ == "__main__":
-    if not args.restore and not args.create and not args.version:
-        sys.exit()
-    logging.info("Beats2Save 1.1 by KampfKeks502")
+def get_dir_list(path):
+    return os.listdir(path)
 
-    if not args.version:
-        check_dir(args.save_dir)
-        check_dir(args.backup_dir)
-    check_dir(args.game_dir)
+
+def get_size_format(b, factor=1024, suffix="B"):
+    for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
+        if b < factor:
+            return f"{b:.2f}{unit}{suffix}"
+        b /= factor
+    return f"{b:.2f}Y{suffix}"
+
+
+def get_size(start_path):
+    total_size = 0
+    try:
+        for dirpath, dirnames, filenames in os.walk(start_path):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                # skip if it is symbolic link
+                if not os.path.islink(fp):
+                    total_size += os.path.getsize(fp)
+    except Exception as err:
+        logging.info("Error trying to get dir size")
+        print(err)
+        sys.exit()
+
+    return total_size
+
+
+def bs_size(game_path, save_path):
+    game_size = get_size(game_path)
+    save_size = get_size(save_path)
+    return game_size + save_size
+
+
+if __name__ == "__main__":
+    if not args.restore and not args.create and not args.info:
+        sys.exit()
+    logging.info("Beats2Save 1.2 by KampfKeks502")
+
     print()
-    logging.info("Path check PASSED")
+    check_dir(args.save_dir)
+    check_dir(args.backup_dir)
+    check_dir(args.game_dir)
     version = bs_version(args.game_dir)
+    total_game_size = bs_size(args.game_dir + "/Beat Saber", args.save_dir + "/Beat Saber")
+    total_backup_size = get_size(args.backup_dir)
+    total_backups_found = backup_count(get_dir_list(args.backup_dir))
+    
+    max_backups = ""
+    if args.max_backups >0:
+        max_backups = "/" + str(args.max_backups)
+    logging.info("Current Game Size: " + get_size_format(total_game_size))
+    logging.info("Total Backup Size: " + get_size_format(total_backup_size) + "       Total backups: " + str(total_backups_found) + max_backups)
+    
     if args.create:
         print()
         logging.info("Creating backup")
