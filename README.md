@@ -22,7 +22,7 @@ When starting a backup, the script copies the "Saves" directory (usually located
 When restoring a backup, the script allows you to select the backup you want to restore from. After that it will move the current Beat Saber installation to a folder called "trash" (located inside the backup folder) just in case you want to recover it. Then the script will start to recover the selected game version.
 
 # How to use
-Adjust the "save", "game", and "backup" paths inside "_backup.bat" and "_restore.bat" to your needs.\
+Adjust the "save", "game", and "backup" paths inside "_backup.bat", "_restore.bat" and "_info.bat" to your needs.\
 **!!! Important !!!** only use "/". **NO** backslashes. Also **environment variables** like "%username%" **won't work** so you have to paste in the full path.
 1. "Save" path - usually located in "C:\Users\\%username%\\AppData\LocalLow\Hyperbolic Magnetism\"
 2. "Game" path - path to your Steam lib e.g. "G:/Steam/steamapps/common"
