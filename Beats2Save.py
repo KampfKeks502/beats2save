@@ -61,10 +61,13 @@ def restore(save_dir, game_dir, backup_dir, version):
     dirs_raw = os.listdir(backup_dir)
     dirs = []
     # filter dir list
+
     for d in dirs_raw:
         if d.find('BeatSaber_') != -1:
             dirs.append(d)
-    
+    if not dirs:
+        logging.info("error no backups found")
+        sys.exit()
     i = 1
     logging.info("Please select your desired backup and hit ENTER [e.g. 1, 2, 3, ...]")
     for d in dirs:
@@ -220,7 +223,7 @@ def bs_size(game_path, save_path):
 if __name__ == "__main__":
     if not args.restore and not args.create and not args.info:
         sys.exit()
-    logging.info("Beats2Save 1.2 by KampfKeks502")
+    logging.info("Beats2Save 1.3 by KampfKeks502")
 
     print()
     check_dir(args.save_dir)
