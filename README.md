@@ -17,7 +17,7 @@ Script tested using Python 3.8 (64-bit) - Win10
 ![Alt text](/../master/screenshots/info.png?raw=true "_info.bat")
 
 # How does it work
-When starting a backup, the script copies the "Saves" directory (usually located in "C:\Users\\%username%\\AppData\LocalLow\Hyperbolic Magnetism\Beat Saber") and the "Game" directory ("...\steamapps\common\Beat Saber") to the desired backup folder. Doing so, it also creates a corresponding folder inside the backup location containing the Beat Saber version and time of the backup. Optionally you can specify how many backups you want to keep. If specified the script will only keep a certain amount of backups at a time.\
+When starting a backup, the script copies the "Saves" directory (usually located in "C:\Users\\%username%\\AppData\LocalLow\Hyperbolic Magnetism\Beat Saber") and the "Game" directory ("...\steamapps\common\Beat Saber") to the desired backup folder. Doing so, it also creates a corresponding folder inside the backup location containing the Beat Saber version and time of the backup. Optionally you can specify how many backups you want to keep. If specified the script will only keep a certain amount of backups at a time.
 
 When restoring a backup, the script allows you to select the backup you want to restore from. After that it will move the current Beat Saber installation to a folder called "trash" (located inside the backup folder) just in case you want to recover it. Then the script will start to recover the selected game version.
 
